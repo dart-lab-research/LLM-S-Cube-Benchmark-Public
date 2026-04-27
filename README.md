@@ -1,27 +1,26 @@
 # LLM-S³: Large Language Model-based Sociodemographic Survey Simulation
 
-This repository is the official implementation of [Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation](https://openreview.net/forum?id=EOsmNflsGz). 
+This repository is the official implementation of [Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation](https://arxiv.org/abs/2509.06337).
 
->📋  This paper presents **LLM-S³** (**L**arge **L**anguage **M**odel-based **S**ociodemographic **S**urvey **S**imulation), a novel benchmark designed to simulate survey respondents using large language models. It enables the generation of synthetic responses that closely mirror real-world sociodemographic patterns.
+> This paper presents **LLM-S³** (**L**arge **L**anguage **M**odel-based **S**ociodemographic **S**urvey **S**imulation), a benchmark for structured survey simulation with large language models. It enables the generation of synthetic responses that closely mirror real-world sociodemographic patterns.
 
-## 🔍 Key Contributions
+## Key Contributions
 
-- **New Simulation Paradigms**  
-  Defines two tasks—**Partial Attribute Simulation (PAS)** for predicting missing demographic attributes, and **Full Attribute Simulation (FAS)** for generating complete response profiles.
-
-- **Cross-Domain Benchmark**  
-  Provides a standardized multi-domain benchmark—**LLM-S³**—based on eleven public datasets spanning four domains:  
+- **Task Abstraction for Survey Simulation**\
+  Formalizes two complementary task settings for LLM-based survey simulation: **Partial Attribute Simulation (PAS)** for predicting missing attributes from individual demographic profiles, and **Full Attribute Simulation (FAS)** for generating synthetic populations from aggregate statistics.
+- **Unified Multi-Domain Benchmark**\
+  Curates **LLM-S³**, a standardized benchmark built on eleven public datasets spanning four sociological domains:\
   *Social and Public Affairs*, *Work and Income*, *Household and Behavioral Patterns*, and *Health and Lifestyle*.
+- **Systematic Evaluation and Diagnostic Analysis**\
+  Evaluates four LLMs (*GPT-4 Turbo*, *GPT-3.5 Turbo*, *LLaMA-3.0-8B*, and *LLaMA-3.1-8B*) under unified quantitative protocols, and highlights practical findings such as attribute-level predictability differences in PAS and structured-output failure modes in FAS.
 
-- **Comprehensive Evaluation**  
-  Benchmarks four LLMs (*GPT-4 Turbo*, *GPT-3.5 Turbo*, *LLaMA-3.0-8B*, and *LLaMA-3.1-8B*) using real survey data and quantitative evaluation metrics.
-
-An overview of our benchmark workflow is illustrated in the following figure, showcasing Partial Attribute Simulation (left) and Full Attribute Simulation (right). 
+An overview of our benchmark workflow is illustrated in the following figure, showcasing Partial Attribute Simulation (left) and Full Attribute Simulation (right).
 ![Benchmark Workflow](./overview.png)
 
 ## Requirements
 
 ### Install Ollama
+
 To install the Ollama platform, execute the following command:
 
 ```bash
@@ -29,6 +28,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 ```
 
 ### Install Dependencies
+
 Create and activate a new conda environment with all required dependencies:
 
 ```bash
@@ -49,20 +49,19 @@ ollama run llama3
 ollama run llama3.1:8b
 ```
 
-
 ### Configure OpenAI API Key
+
 Create a configuration file for your OpenAI API key:
 
 ```bash
 echo "YOUR_API_KEY_HERE" > config/api_key.txt
 ```
 
-
 ## Project Guide
 
 ### 1. Locate the specified file path
 
-Taking the prediction attribute of the public's support for presidential candidates in the ANES dataset as an example, first enter the following command to locate the file location: 
+Taking the prediction attribute of the public's support for presidential candidates in the ANES dataset as an example, first enter the following command to locate the file location:
 
 ```bash
 # ANES dataset
@@ -100,7 +99,7 @@ Still taking the simulation of the public election intention of the ANES2020 dat
 A sample list: ['80', '75', '65']
 ```
 
-First enter the following command to locate the file location: 
+First enter the following command to locate the file location:
 
 ```bash
 # ANES dataset
@@ -126,57 +125,67 @@ python Fsimulation_deal.py
 The resulting file should contain six columns: three columns for the actual value and three columns for the predicted value.
 
 ### 3. Calculate output (for FAS & PAS)
-For the output results of the correct rate of multiple-choice questions, directly run the `.py` file to get the correct rate output results and store them in `acc.txt`. 
+
+For the output results of the correct rate of multiple-choice questions, directly run the `.py` file to get the correct rate output results and store them in `acc.txt`.
 
 For the output of numerical values (non-selective question accuracy), you need to first calculate the KL divergence between the predicted value and the actual value. The data in our table is obtained by changing the KL divergence to the following formula (see the appendix of the article):
 
 The **Kullback-Leibler (KL) divergence** calculation formula is as follows:
 
 $$
-D_{KL}(P \| Q) = \sum_{i=1}^K P_i \log \frac{P_i}{Q_i}
+D\_{KL}(P | Q) = \sum\_{i=1}^K P\_i \log \frac{P\_i}{Q\_i}
 $$
 
-Then, map the KL divergence $D_j$ for each target attribute to a [0, 1] score, where higher means better model performance:
+Then, map the KL divergence $D\_j$ for each target attribute to a \[0, 1] score, where higher means better model performance:
 
 $$
-S_j = \frac{ \ln\left(1 + \frac{1}{D_j}\right) }{ 1 + \ln\left(1 + \frac{1}{D_j}\right) }
+S\_j = \frac{ \ln\left(1 + \frac{1}{D\_j}\right) }{ 1 + \ln\left(1 + \frac{1}{D\_j}\right) }
 $$
 
-- **Higher $S_j$:** Better alignment between predicted and true distributions  
-- **Lower $S_j$:** Larger divergence between predicted and true
-
+- **Higher $S\_j$:** Better alignment between predicted and true distributions
+- **Lower $S\_j$:** Larger divergence between predicted and true
 
 ### 4. Model Performance Visualization
 
 We use radar plots to provide an intuitive comparison of model performance across datasets, prediction tasks, and evaluation settings in both the PAS and FAS scenarios.
 
-- #### For PAS: 
+- <br />
+  #### For PAS:
+
 ![PAS Performance Radar Plot](./radar2.png)
 
-- **Plot design:**  
+- **Plot design:**\
   Each axis is individually scaled within its dataset for better visualization of relative differences.
-- **Prediction tasks:**  
+- **Prediction tasks:**
   - **Multi-choice (top row):** Tasks with several answer options, performance measured by accuracy.
   - **Numerical (bottom row):** Continuous value estimation, performance measured by a normalized transformation of KL divergence.
-- **Evaluation strategies:**  
+- **Evaluation strategies:**
   - **Zero-shot:** Shown on the left.
   - **Few-shot:** Shown on the right.
 
----   
-- #### For FAS: 
+***
+
+- <br />
+  #### For FAS:
+
 ![FAS Performance Radar Plot](./radar1.png)
 
-- **Prediction tasks:**  
-   Generate some batches of data based on background information to reflect the distribution, performance measured by a normalized transformation of KL divergence.
-
-- **Evaluation strategies:**  
+- **Prediction tasks:**\
+  Generate some batches of data based on background information to reflect the distribution, performance measured by a normalized transformation of KL divergence.
+- **Evaluation strategies:**
   - **Zero-context:** Shown on the left.
   - **Context-enhanced:** Shown on the right.
-
-
-- **Scoring:**  
+- **Scoring:**\
   Higher values always indicate better model performance.
 
+## Citation
 
-
+```bibtex
+@article{zhao2025large,
+  title={Large language models as virtual survey respondents: Evaluating sociodemographic response generation},
+  author={Zhao, Jianpeng and Yuan, Chenyu and Luo, Weiming and Xie, Haoling and Zhang, Guangwei and Quan, Steven Jige and Yuan, Zixuan and Wang, Pengyang and Zhang, Denghui},
+  journal={arXiv preprint arXiv:2509.06337},
+  year={2025}
+}
+```
 

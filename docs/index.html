@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LLM-S&sup3;: Large Language Models as Virtual Survey Respondents</title>
+<meta name="description" content="LLM-S3: A benchmark for evaluating Large Language Models as virtual survey respondents, with Partial and Full Attribute Simulation tasks across 11 real-world sociological datasets." />
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body, {delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <h1 class="title">Large Language Models as Virtual Survey Respondents:<br/>Evaluating Sociodemographic Response Generation</h1>
+
+    <div class="authors">
+      <span class="author">Jianpeng Zhao<sup>1</sup></span>,
+      <span class="author">Chenyu Yuan<sup>1</sup></span>,
+      <span class="author">Weiming Luo<sup>1</sup></span>,
+      <span class="author">Haoling Xie<sup>2</sup></span>,
+      <span class="author">Guangwei Zhang<sup>3</sup></span>,<br/>
+      <span class="author">Steven Jige Quan<sup>4</sup></span>,
+      <span class="author">Zixuan Yuan<sup>5</sup></span>,
+      <span class="author">Pengyang Wang<sup>1</sup></span>,
+      <span class="author">Denghui Zhang<sup>6</sup></span>
+    </div>
+
+    <div class="affiliations">
+      <sup>1</sup>University of Macau &nbsp;
+      <sup>2</sup>The Chinese University of Hong Kong &nbsp;
+      <sup>3</sup>City University of Hong Kong<br/>
+      <sup>4</sup>Seoul National University &nbsp;
+      <sup>5</sup>The Hong Kong University of Science and Technology (Guangzhou) &nbsp;
+      <sup>6</sup>Stevens Institute of Technology
+    </div>
+
+    <div class="links">
+      <a class="btn" href="https://arxiv.org/abs/2509.06337" target="_blank" rel="noopener">
+        <span class="icon">&#128196;</span> arXiv
+      </a>
+      <a class="btn" href="https://arxiv.org/pdf/2509.06337" target="_blank" rel="noopener">
+        <span class="icon">&#128195;</span> PDF
+      </a>
+      <a class="btn" href="https://github.com/dart-lab-research/LLM-S-Cube-Benchmark" target="_blank" rel="noopener">
+        <span class="icon">&lt;/&gt;</span> Code
+      </a>
+      <a class="btn" href="#bibtex">
+        <span class="icon">&#8220;&#8221;</span> BibTeX
+      </a>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav">
+  <div class="container">
+    <a href="#overview">Overview</a>
+    <a href="#benchmark">Datasets</a>
+    <a href="#tasks">Task Paradigms</a>
+    <a href="#results">Evaluation</a>
+    <a href="#analysis">In-Depth Analysis</a>
+    <a href="#bibtex">Citation</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ===================== Overview (Abstract + Framework) ===================== -->
+  <section id="overview">
+    <h2>Overview</h2>
+
+    <p>
+      Questionnaire-based surveys are foundational to social science research and public policymaking, yet traditional survey methods remain costly, time-consuming, and often limited in scale.
+      Although prior work has explored large language models (LLMs) as virtual survey respondents, existing studies often address narrow task settings, focus on single sociological domains, or lack a unified evaluation framework that enables systematic comparison across diverse datasets and models.
+    </p>
+    <p>
+      To address these gaps, we introduce two complementary task abstractions: <b>Partial Attribute Simulation (PAS)</b>, where LLMs predict missing attributes from incomplete respondent profiles, and <b>Full Attribute Simulation (FAS)</b>, where LLMs generate complete synthetic datasets under zero-context and context-enhanced conditions. Both are framed as diagnostic and exploratory tools rather than replacements for human data collection. We curate <b>LLM-S<sup>3</sup></b> (<u><b>L</b></u>arge <u><b>L</b></u>anguage <u><b>M</b></u>odel-based <u><b>S</b></u>ociodemographic <u><b>S</b></u>urvey <u><b>S</b></u>imulation), a benchmark spanning 11 real-world public datasets across four sociological domains, and evaluate GPT-3.5/4 Turbo and LLaMA 3.0/3.1-8B under zero-shot and few-shot settings. Our evaluation reveals consistent performance trends across model families, highlights failure modes in structured output generation, and demonstrates how context and prompt design affect simulation fidelity.
+    </p>
+
+    <figure class="fig-box fig-ar-2-1">
+      <div class="fig-img"><img src="assets/img/framework.png" alt="Framework overview: PAS and FAS" /></div>
+      <figcaption><b>Figure 1.</b> An Overview of Partial Attribute Simulation (left) and Full Attribute Simulation (right).</figcaption>
+    </figure>
+
+    <div class="highlights">
+      <div class="hlbox"><span class="num">11</span><span class="label">Public Datasets</span></div>
+      <div class="hlbox"><span class="num">4</span><span class="label">Sociological Domains</span></div>
+      <div class="hlbox"><span class="num">4</span><span class="label">LLMs Evaluated</span></div>
+      <div class="hlbox"><span class="num">2</span><span class="label">Task Paradigms</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== Benchmark (datasets) ===================== -->
+  <section id="benchmark">
+    <h2>Datasets</h2>
+    <p>
+      We curate a cross-domain benchmark suite, <b>LLM-S<sup>3</sup></b>, composed of eleven public datasets across four sociological areas: Social and Public Affairs, Work and Income, Household and Behavioral Patterns, and Health and Lifestyle.
+      We note that the datasets used in this study are predominantly drawn from North American and European contexts, reflecting the current availability of large-scale public survey data. While this scope is a practical constraint of the present evaluation rather than a fundamental limitation of the PAS/FAS framework itself, the benchmark is designed to be extensible: as cross-cultural and multilingual survey datasets become available, the same evaluation protocol can be applied to assess LLM performance across diverse sociological contexts.
+    </p>
+
+      <table class="data-table compact">
+        <caption><b>Table 1.</b> Summary of the survey datasets utilized in constructing the benchmark for this study. The numbers of cases and attributes represent the total sample size and variable count in each raw dataset, respectively.</caption>
+        <thead>
+          <tr>
+            <th>Domain</th><th>Survey Name</th><th>Abbreviation</th><th>Year</th><th class="desc">Description</th><th>Number of Cases</th><th>Number of Attributes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="domain" rowspan="3">Social and Public Affairs</td><td>American National Election Studies</td><td>ANES</td><td>2020</td><td class="desc">Individual’s views on certain social and political issues.</td><td>3080 individuals</td><td>470</td></tr>
+          <tr><td>General Social Survey</td><td>GSS</td><td>2022</td><td class="desc">Individual's attitudes towards work and elections.</td><td>4150 individuals</td><td>1156</td></tr>
+          <tr><td>Basic Income Survey</td><td>BIS</td><td>2016-2017 spring</td><td class="desc">A survey about Europeans' opinions toward basic income.</td><td>9649 individuals</td><td>15</td></tr>
+
+          <tr><td class="domain" rowspan="2">Work and Income</td><td>Employee Survey</td><td>EmpS</td><td>&mdash;</td><td class="desc">Employee life experience and job satisfaction.</td><td>3,025</td><td>23</td></tr>
+          <tr><td>American Community Survey</td><td>ACS</td><td>Not specified</td><td class="desc">The ACS dataset offers a nuanced exploration of socioeconomic dynamics in the United States.</td><td>2000 individuals</td><td>13</td></tr>
+
+          <tr><td class="domain" rowspan="3">Household and Behavioral Patterns</td><td>Residential Energy Consumption Survey</td><td>RECS</td><td>2020</td><td class="desc">Household survey, energy supplier data, and consumption/expenditure estimates.</td><td>18496 households</td><td>799</td></tr>
+          <tr><td>National Household Travel Survey</td><td>NHTS</td><td>2017</td><td class="desc">Household’s mobility choices and daily travel behavior.</td><td>923572 queries</td><td>229</td></tr>
+          <tr><td>Trell Social Media Usage Data</td><td>Trell SMU</td><td>2020</td><td class="desc">Social media user's viewing/uploading/commenting habits towards a certain video website.</td><td>488877 individuals</td><td>26</td></tr>
+
+          <tr><td class="domain" rowspan="3">Health and Lifestyle</td><td>Music &amp; Mental Health Survey Results</td><td>MxMH</td><td>2022</td><td class="desc">Individual’s music preferences and mental health correlations.</td><td>736 individuals</td><td>33</td></tr>
+          <tr><td>Young People Survey</td><td>YPS</td><td>2013</td><td class="desc">Individual’s preferences, habits, and personality traits.</td><td>1011 individuals</td><td>150</td></tr>
+          <tr><td>Mental Health Dataset</td><td>MHD</td><td>2014-2016</td><td class="desc">Survey results on music taste and self-reported mental health.</td><td>292364 individuals</td><td>17</td></tr>
+        </tbody>
+      </table>
+  </section>
+
+  <!-- ===================== Task Paradigms (task definition) ===================== -->
+  <section id="tasks">
+    <h2>Task Paradigms</h2>
+
+    <h3>Partial Attribute Simulation (PAS)</h3>
+    <p>
+      In numerous real-world survey scenarios, an organization already holds structured demographic records for a population of interest but lacks the specific attitudinal or behavioral measurements it needs. PAS is designed for precisely this setting: the available demographic attributes serve as the input profile, while the unmeasured attitudinal traits act as the prediction targets.
+    </p>
+    <p>
+      For example, a government labor agency might maintain administrative records for thousands of employees, including age, gender, job level, education, and employment type, yet lack survey data on job satisfaction, stress, or work-life balance. Conducting a full survey is costly and time-consuming; however, the agency still needs distributional estimates of these outcomes to inform workforce policy. Crucially, PAS does not require any individual-level response history and relies solely on the demographic data that the organization already possesses.
+    </p>
+
+    <p>
+      Let $\mathcal{D}=\{\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_N\}$ denote a survey dataset of $N$ samples, where each $\mathbf{x}_i\in\mathbb{R}^M$ consists of $M$ attributes from the attribute set $\mathcal{A}$. Split $\mathcal{A}$ into an input set $\mathcal{A}_{\text{prior}}$ and a target set $\mathcal{A}_{\text{target}}=\mathcal{A}\setminus\mathcal{A}_{\text{prior}}$, then model:
+      $$\mathbf{A}_{\text{target}} \sim P_{\theta}(\mathbf{A}_{\text{target}} \mid \mathbf{A}_{\text{prior}}).$$
+    </p>
+
+    <h3>Full Attribute Simulation (FAS)</h3>
+    <p>
+      While PAS assumes that individual demographic records are available, a different and more demanding scenario arises when an organization possesses only aggregate population statistics rather than individual-level data. This is the setting that FAS is designed to address: the LLM is given population-level priors and asked to generate a set of synthetic individuals whose joint attribute distribution approximates these priors.
+    </p>
+    <p>
+      Consider a market research firm that has access to published census summaries for a target region, such as the joint distribution of age, gender, and income brackets, but holds no individual survey records. The firm needs to generate a synthetic population of respondents whose collective attribute distribution matches the known aggregate statistics, so that downstream analyses such as consumer preference estimation or policy impact assessment can be conducted. Unlike PAS, which conditions on individual records and predicts missing attributes per person, FAS requires only aggregate statistics and generates an entirely synthetic population from scratch.
+    </p>
+
+    <p>
+      FAS selects two generation paradigms:
+      $$
+      \begin{aligned}
+      \mathbf{x} &\sim P_{\theta}(\mathbf{X}\mid \mathbf{C},\mathbf{S}) && \text{(zero-context)},\\
+      \mathbf{x} &\sim P_{\theta}(\mathbf{X}\mid \mathbf{C},\mathbf{S},P(\mathbf{A}_{\text{prior}})) && \text{(context-enhanced)},
+      \end{aligned}
+      $$
+      Here, $\mathbf{C}$ denotes contextual metadata, $\mathbf{S}$ denotes schema constraints, and $P(\mathbf{A}_{\text{prior}})$ injects empirical priors to better align synthetic generations with real-world patterns.
+    </p>
+  </section>
+
+  <!-- ===================== Results (leaderboards + tables + key plots) ===================== -->
+  <section id="results">
+    <h2>Evaluation</h2>
+
+    <h3>PAS performance</h3>
+
+    <!-- <h4>Numerical Prediction</h4> -->
+    <div class="table-scroll">
+      <table class="data-table small">
+        <caption><b>Table 2.</b> LLM performance on numerical prediction in PAS (KL-based score &uarr;). Bold: best; Underlined: second-best within each evaluation setting.</caption>
+        <thead>
+          <tr>
+            <th rowspan="2">Dataset</th>
+            <th colspan="4">Zero-Shot</th>
+            <th colspan="4">Few-Shot</th>
+          </tr>
+          <tr>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>ANES</td><td><b>0.5735</b><span class="std">&plusmn;0.0529</span></td><td><u>0.5576</u><span class="std">&plusmn;0.0293</span></td><td>0.4875<span class="std">&plusmn;0.0533</span></td><td>0.4768<span class="std">&plusmn;0.0755</span></td><td><b>0.5568</b><span class="std">&plusmn;0.0072</span></td><td><u>0.5459</u><span class="std">&plusmn;0.0494</span></td><td>0.4646<span class="std">&plusmn;0.0575</span></td><td>0.4683<span class="std">&plusmn;0.0334</span></td></tr>
+          <tr><td>GSS</td><td>0.6983<span class="std">&plusmn;0.0119</span></td><td><b>0.7082</b><span class="std">&plusmn;0.0129</span></td><td><u>0.6990</u><span class="std">&plusmn;0.0198</span></td><td>0.6818<span class="std">&plusmn;0.0062</span></td><td>0.6766<span class="std">&plusmn;0.0086</span></td><td><b>0.7054</b><span class="std">&plusmn;0.0164</span></td><td><u>0.6878</u><span class="std">&plusmn;0.0141</span></td><td>0.6801<span class="std">&plusmn;0.0308</span></td></tr>
+          <tr><td>BIS</td><td><b>0.6204</b><span class="std">&plusmn;0.0462</span></td><td>0.5119<span class="std">&plusmn;0.0129</span></td><td><u>0.5777</u><span class="std">&plusmn;0.0458</span></td><td>0.5730<span class="std">&plusmn;0.0378</span></td><td><b>0.6207</b><span class="std">&plusmn;0.0417</span></td><td>0.5299<span class="std">&plusmn;0.0337</span></td><td><u>0.5640</u><span class="std">&plusmn;0.0486</span></td><td>0.5622<span class="std">&plusmn;0.0476</span></td></tr>
+          <tr><td>RECS</td><td><b>0.6554</b><span class="std">&plusmn;0.0162</span></td><td><u>0.5648</u><span class="std">&plusmn;0.0568</span></td><td>0.3114<span class="std">&plusmn;0.0801</span></td><td>0.2669<span class="std">&plusmn;0.0197</span></td><td><u>0.5293</u><span class="std">&plusmn;0.1865</span></td><td><b>0.5489</b><span class="std">&plusmn;0.0920</span></td><td>0.3088<span class="std">&plusmn;0.0874</span></td><td>0.2365<span class="std">&plusmn;0.0226</span></td></tr>
+          <tr><td>ACS</td><td>0.5159<span class="std">&plusmn;0.1283</span></td><td>0.4722<span class="std">&plusmn;0.1859</span></td><td><b>0.6056</b><span class="std">&plusmn;0.0983</span></td><td><u>0.5766</u><span class="std">&plusmn;0.1239</span></td><td>0.4791<span class="std">&plusmn;0.1106</span></td><td>0.3636<span class="std">&plusmn;0.0410</span></td><td><b>0.6055</b><span class="std">&plusmn;0.1047</span></td><td><u>0.5969</u><span class="std">&plusmn;0.1111</span></td></tr>
+          <tr><td>Trell SMU</td><td>0.3523<span class="std">&plusmn;0.0340</span></td><td>0.4301<span class="std">&plusmn;0.0033</span></td><td><b>0.5612</b><span class="std">&plusmn;0.0003</span></td><td><u>0.5361</u><span class="std">&plusmn;0.0064</span></td><td>0.4274<span class="std">&plusmn;0.0499</span></td><td><u>0.5197</u><span class="std">&plusmn;0.0670</span></td><td><b>0.5462</b><span class="std">&plusmn;0.0189</span></td><td>0.4685<span class="std">&plusmn;0.0147</span></td></tr>
+          <tr><td>NHTS</td><td>0.4009<span class="std">&plusmn;0.0066</span></td><td>0.3125<span class="std">&plusmn;0.0842</span></td><td><u>0.4927</u><span class="std">&plusmn;0.1769</span></td><td><b>0.6079</b><span class="std">&plusmn;0.1036</span></td><td>0.3568<span class="std">&plusmn;0.0996</span></td><td>0.3103<span class="std">&plusmn;0.1499</span></td><td><u>0.4908</u><span class="std">&plusmn;0.1058</span></td><td><b>0.5798</b><span class="std">&plusmn;0.0760</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- <p class="note small">Values are reported as avg. &plusmn; std. Bold: best; Underlined: second-best within each evaluation setting.</p> -->
+
+    <!-- <h4>Multiple-Choice Prediction</h4> -->
+    <div class="table-scroll">
+      <table class="data-table small">
+        <caption><b>Table 3.</b> LLM performance on multiple-choice prediction in PAS (Accuracy &uarr;). Bold: best; Underlined: second-best within each evaluation setting.</caption>
+        <thead>
+          <tr>
+            <th rowspan="2">Dataset</th>
+            <th colspan="4">Zero-Shot</th>
+            <th colspan="4">Few-Shot</th>
+          </tr>
+          <tr>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>ANES</td><td><u>0.7854</u><span class="std">&plusmn;0.0598</span></td><td><b>0.8358</b><span class="std">&plusmn;0.0324</span></td><td>0.7827<span class="std">&plusmn;0.0487</span></td><td>0.7525<span class="std">&plusmn;0.0372</span></td><td><u>0.7796</u><span class="std">&plusmn;0.0447</span></td><td><b>0.8219</b><span class="std">&plusmn;0.0395</span></td><td>0.7686<span class="std">&plusmn;0.0382</span></td><td>0.7355<span class="std">&plusmn;0.0491</span></td></tr>
+          <tr><td>GSS</td><td><u>0.5587</u><span class="std">&plusmn;0.1358</span></td><td><b>0.6313</b><span class="std">&plusmn;0.0340</span></td><td>0.5290<span class="std">&plusmn;0.0583</span></td><td>0.4969<span class="std">&plusmn;0.0326</span></td><td><u>0.4948</u><span class="std">&plusmn;0.0430</span></td><td><b>0.6222</b><span class="std">&plusmn;0.0348</span></td><td>0.4933<span class="std">&plusmn;0.0895</span></td><td>0.4128<span class="std">&plusmn;0.0777</span></td></tr>
+          <tr><td>BIS</td><td>0.1865<span class="std">&plusmn;0.0032</span></td><td>0.2165<span class="std">&plusmn;0.0022</span></td><td><u>0.2629</u><span class="std">&plusmn;0.0600</span></td><td><b>0.2848</b><span class="std">&plusmn;0.0217</span></td><td>0.1465<span class="std">&plusmn;0.0164</span></td><td><u>0.2169</u><span class="std">&plusmn;0.0045</span></td><td><b>0.2261</b><span class="std">&plusmn;0.0233</span></td><td>0.2077<span class="std">&plusmn;0.0044</span></td></tr>
+          <tr><td>RECS</td><td>0.6208<span class="std">&plusmn;0.1116</span></td><td><b>0.8598</b><span class="std">&plusmn;0.0793</span></td><td><u>0.7257</u><span class="std">&plusmn;0.0144</span></td><td>0.6540<span class="std">&plusmn;0.0730</span></td><td>0.6386<span class="std">&plusmn;0.0257</span></td><td><b>0.9113</b><span class="std">&plusmn;0.0165</span></td><td><u>0.7483</u><span class="std">&plusmn;0.2132</span></td><td>0.6742<span class="std">&plusmn;0.0623</span></td></tr>
+          <tr><td>EmpS</td><td><u>0.2192</u><span class="std">&plusmn;0.0293</span></td><td>0.2171<span class="std">&plusmn;0.0017</span></td><td><b>0.2302</b><span class="std">&plusmn;0.0259</span></td><td>0.2188<span class="std">&plusmn;0.0183</span></td><td><b>0.2267</b><span class="std">&plusmn;0.0092</span></td><td>0.2116<span class="std">&plusmn;0.0105</span></td><td>0.2147<span class="std">&plusmn;0.0230</span></td><td>0.2143<span class="std">&plusmn;0.0045</span></td></tr>
+          <tr><td>NHTS</td><td><b>0.7314</b><span class="std">&plusmn;0.0077</span></td><td><u>0.7231</u><span class="std">&plusmn;0.0003</span></td><td>0.5732<span class="std">&plusmn;0.0126</span></td><td>0.6507<span class="std">&plusmn;0.0453</span></td><td><u>0.7246</u><span class="std">&plusmn;0.0322</span></td><td><b>0.7300</b><span class="std">&plusmn;0.0057</span></td><td>0.6409<span class="std">&plusmn;0.0797</span></td><td>0.5987<span class="std">&plusmn;0.0270</span></td></tr>
+          <tr><td>Trell SMU</td><td><u>0.6415</u><span class="std">&plusmn;0.0105</span></td><td><b>0.6525</b><span class="std">&plusmn;0.0050</span></td><td>0.3865<span class="std">&plusmn;0.0138</span></td><td>0.5028<span class="std">&plusmn;0.0134</span></td><td><u>0.7228</u><span class="std">&plusmn;0.0357</span></td><td>0.6601<span class="std">&plusmn;0.0057</span></td><td>0.7099<span class="std">&plusmn;0.0051</span></td><td><b>0.7309</b><span class="std">&plusmn;0.0176</span></td></tr>
+          <tr><td>MxMH</td><td><b>0.1283</b><span class="std">&plusmn;0.0380</span></td><td><u>0.1021</u><span class="std">&plusmn;0.0018</span></td><td>0.0901<span class="std">&plusmn;0.0129</span></td><td>0.0933<span class="std">&plusmn;0.0151</span></td><td><b>0.1542</b><span class="std">&plusmn;0.0517</span></td><td><u>0.0978</u><span class="std">&plusmn;0.0093</span></td><td>0.0920<span class="std">&plusmn;0.0103</span></td><td>0.0861<span class="std">&plusmn;0.0120</span></td></tr>
+          <tr><td>YPS</td><td>0.2729<span class="std">&plusmn;0.0074</span></td><td>0.2559<span class="std">&plusmn;0.0038</span></td><td><b>0.3083</b><span class="std">&plusmn;0.0478</span></td><td><u>0.2787</u><span class="std">&plusmn;0.0426</span></td><td><u>0.2915</u><span class="std">&plusmn;0.0283</span></td><td><b>0.2968</b><span class="std">&plusmn;0.0471</span></td><td>0.2768<span class="std">&plusmn;0.0175</span></td><td>0.1990<span class="std">&plusmn;0.0418</span></td></tr>
+          <tr><td>MHD</td><td>0.3377<span class="std">&plusmn;0.0058</span></td><td>0.3375<span class="std">&plusmn;0.0045</span></td><td><u>0.3390</u><span class="std">&plusmn;0.0068</span></td><td><b>0.3434</b><span class="std">&plusmn;0.0070</span></td><td>0.3314<span class="std">&plusmn;0.0198</span></td><td>0.3339<span class="std">&plusmn;0.0079</span></td><td><u>0.3403</u><span class="std">&plusmn;0.0094</span></td><td><b>0.3437</b><span class="std">&plusmn;0.0063</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      To make the tabular comparison more visually salient, we provides a radar visualization of the same per-dataset PAS results (axis values normalized within each dataset):
+    </p>
+    <figure class="fig-box fig-ar-square fig-narrow">
+      <div class="fig-img"><img src="assets/img/pas_all.png" alt="PAS radar chart across datasets" /></div>
+      <figcaption><b>Figure 2.</b> Radar plots illustrating model performance on the PAS scenario across datasets (each axis is individually scaled per dataset to enhance the visibility of relative differences). The top row shows multiple-choice tasks, and the bottom row shows numerical prediction, under zero-shot evaluation (left) and few-shot evaluation (right). Higher values indicate better performance.</figcaption>
+    </figure>
+
+    <h3>FAS performance</h3>
+    <div class="table-scroll">
+      <table class="data-table small">
+        <caption><b>Table 4.</b> LLM performance in FAS (KL-based score &uarr;). Percentages indicate relative change from zero-context to context-enhanced generation.</caption>
+        <thead>
+          <tr>
+            <th rowspan="2">Dataset</th>
+            <th colspan="4">Zero-Context</th>
+            <th colspan="4">Context-Enhanced</th>
+          </tr>
+          <tr>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+            <th>GPT-3.5</th><th>GPT-4</th><th>LLaMA 3.0</th><th>LLaMA 3.1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>GSS</td><td><u>0.6490</u></td><td><b>0.6490</b></td><td>0.6508</td><td>0.6520</td>
+              <td>0.6569 <span class="pos">&uarr;1.22%</span></td>
+              <td><b>0.6862</b> <span class="pos">&uarr;5.73%</span></td>
+              <td>0.6571 <span class="pos">&uarr;0.98%</span></td>
+              <td><u>0.6726</u> <span class="pos">&uarr;3.16%</span></td></tr>
+          <tr><td>Trell SMU</td><td><u>0.3170</u></td><td><b>0.3320</b></td><td>0.2353</td><td>0.2992</td>
+              <td><u>0.3410</u> <span class="pos">&uarr;7.57%</span></td>
+              <td><b>0.3617</b> <span class="pos">&uarr;8.95%</span></td>
+              <td>0.2557 <span class="pos">&uarr;8.68%</span></td>
+              <td>0.2792 <span class="neg">&darr;6.67%</span></td></tr>
+          <tr><td>YPS</td><td><u>0.6674</u></td><td><b>0.7008</b></td><td>0.6567</td><td>0.6549</td>
+              <td><u>0.6764</u> <span class="pos">&uarr;1.35%</span></td>
+              <td><b>0.7210</b> <span class="pos">&uarr;2.89%</span></td>
+              <td>0.6569 <span class="pos">&uarr;0.04%</span></td>
+              <td>0.6539 <span class="neg">&darr;0.16%</span></td></tr>
+          <tr><td>RECS</td><td><u>0.6334</u></td><td><b>0.6384</b></td><td>0.5597</td><td>0.3826</td>
+              <td><u>0.6092</u> <span class="neg">&darr;3.81%</span></td>
+              <td><b>0.6403</b> <span class="pos">&uarr;0.30%</span></td>
+              <td>0.5883 <span class="pos">&uarr;5.12%</span></td>
+              <td>0.5529 <span class="pos">&uarr;44.51%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      To make the tabular comparison more visually salient, we provides a radar visualization of the same per-dataset FAS results (axis values normalized within each dataset):
+    </p>
+    <figure class="fig-box fig-ar-wide fig-narrow">
+      <div class="fig-img"><img src="assets/img/fas_all.png" alt="FAS radar chart across datasets" /></div>
+      <figcaption><b>Figure 3.</b> Radar plots illustrating model performance on the FAS scenario across datasets (each axis is individually scaled per dataset to enhance the visibility of relative differences). Results are shown under zero-context generation (left) and context-enhanced generation (right). Higher values indicate better performance.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ===================== Analysis ===================== -->
+  <section id="analysis">
+    <h2>In-Depth Analysis</h2>
+
+    <h3>Attribute Predictability &amp; Demographic Alignment in PAS</h3>
+    <p>
+      We conduct a subgroup-level analysis on the EmpS dataset (<span class="num">N=3,025</span>) using LLaMA 3.1-8B in the zero-shot setting.
+      All five target attributes are 5-choice questions, yielding a random baseline accuracy of <span class="num">20%</span>.
+      JobSatisfaction (<span class="num">33.5%</span>) consistently exceeds the baseline across all subgroups, while Stress (<span class="num">16.7%</span>) falls below the baseline.
+    </p>
+
+    <figure class="fig-box fig-ar-3-1">
+      <div class="fig-img"><img src="assets/img/subgroup_performance_bars.png" alt="PAS subgroup accuracy on EmpS"/></div>
+      <figcaption><b>Figure 5.</b> PAS subgroup-level accuracy on the EmpS dataset (LLaMA 3.1-8B, zero-shot, <span class="num">N=3,025</span>, averaged over 3 independent runs). The dashed line marks the random baseline (<span class="num">20%</span>).</figcaption>
+    </figure>
+
+    <p>
+      We further compares the ground-truth and LLM-predicted response distributions for JobSatisfaction and Stress. Although both attributes exhibit skewed empirical distributions, the model closely reproduces the right-skewed pattern of JobSatisfaction but fails to recover the strongly left-skewed distribution of Stress, indicating that the latter is much less aligned with the available demographic covariates.
+    </p>
+
+    <figure class="fig-box fig-ar-2-1 fig-sub-2">
+      <div class="fig-img"><img src="assets/img/bias_amplification.png" alt="Predicted vs ground-truth distribution"/></div>
+      <figcaption><b>Figure 6.</b> Distributional comparison between ground-truth and LLM-predicted responses for JobSatisfaction and Stress (EmpS, LLaMA 3.1-8B, averaged over 3 runs).</figcaption>
+    </figure>
+
+    <h3>Failure Modes in FAS</h3>
+    <p>
+      A major challenge in the FAS scenario is the occurrence of FAS failures, where a significant proportion of generated outputs do not meet our requirements, leading to a loss of usable samples.
+      We identify two failure modes: <b>Case 1: Insufficient Output Sample</b> and <b>Case 2: Completely Irrelevant Output</b>.
+      Experimental results reveal significant performance disparities: LLaMA variants exhibit 15&ndash;58% failure rates across all datasets. In contrast, GPT models maintain near-zero failure rates on simpler tasks (e.g., GSS and Trell SMU), but show moderate errors on more complex datasets.
+    </p>
+
+    <div class="fig-grid fig-grid-2 fig-grid-2-asym">
+      <figure class="fig-box fig-ar-7-5 fig-tiny fig-compact fig-cap-sm">
+        <div class="fig-img"><img src="assets/img/fas_failure_error_case.png" alt="FAS failure examples"/></div>
+        <figcaption><b>Figure 7.</b> Representative error cases in FAS.</figcaption>
+      </figure>
+
+      <figure class="fig-box fig-ar-26-1 fig-slim fig-compact fig-cap-sm">
+        <div class="fig-img"><img src="assets/img/fas_failure_rate.png" alt="FAS failure rate"/></div>
+        <figcaption><b>Figure 8.</b> Statistical analysis of failure rates across different attributes in FAS.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Deployment Insights</h3>
+    <p>
+      Three practical optimization dimensions are examined: reasoning-oriented distillation, context-aware prompting, and few-shot example balance.
+    </p>
+
+    <div class="fig-grid fig-grid-3">
+      <figure class="fig-box fig-ar-5-2 fig-cap-equal">
+        <div class="fig-img"><img src="assets/img/perf_inference_llm.png" alt="Reasoning-distilled LLaMA"/></div>
+        <figcaption><b>Figure 9.</b> Performance Comparison between LLaMA models and their DeepSeek-R1-Distill counterparts.</figcaption>
+      </figure>
+      <figure class="fig-box fig-ar-5-2 fig-cap-equal">
+        <div class="fig-img"><img src="assets/img/context_inte.png" alt="Context integration on GSS"/></div>
+        <figcaption><b>Figure 10.</b> Impact of contextual prompts on predictive accuracy in multiple-choice tasks.</figcaption>
+      </figure>
+      <figure class="fig-box fig-ar-5-2 fig-cap-equal">
+        <div class="fig-img"><img src="assets/img/four_dist.png" alt="Few-shot balance on NHTS"/></div>
+        <figcaption><b>Figure 11.</b> Effect of few-shot example balance on output distributions.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Key Takeaways</h3>
+    <ol class="findings-list">
+      <li>LLMs exhibit reliable and consistent performance trends across various model families and task types.</li>
+      <li>Prompt design and contextual augmentation significantly impact simulation fidelity, highlighting their crucial role.</li>
+      <li>Failure cases in structured output generation remain a major bottleneck, particularly evident in the Full Attribute Simulation (FAS) scenario.</li>
+      <li>We explicitly acknowledge that our evaluation measures statistical and distributional similarity, not behavioral fidelity, construct validity, or the nuanced reasoning of real human respondents.</li>
+    </ol>
+
+    <h3>Ethical Considerations</h3>
+    <ul class="ethics">
+      <li><b>Bias amplification.</b> Our experiments demonstrate that LLMs can amplify existing biases present in training data, necessitating rigorous bias audits before deployment.</li>
+      <li><b>Representation and generalizability.</b> The datasets evaluated are predominantly drawn from North American and European contexts; the benchmark is designed to be extensible to cross-cultural and multilingual settings.</li>
+      <li><b>Risk of misuse or misrepresentation.</b> Without proper disclosure, LLM-generated responses could be mistaken for genuine human survey data; practitioners should explicitly disclose synthetic data usage and limitations.</li>
+      <li><b>Transparency and reproducibility.</b> Synthetic data generation processes should be transparent and reproducible; synthetic data should complement rather than replace genuine survey data.</li>
+    </ul>
+  </section>
+
+  <!-- ===================== BibTeX ===================== -->
+  <section id="bibtex">
+    <h2>Citation</h2>
+<pre><code>@article{zhao2025large,
+  title={Large language models as virtual survey respondents: Evaluating sociodemographic response generation},
+  author={Zhao, Jianpeng and Yuan, Chenyu and Luo, Weiming and Xie, Haoling and Zhang, Guangwei and Quan, Steven Jige and Yuan, Zixuan and Wang, Pengyang and Zhang, Denghui},
+  journal={arXiv preprint arXiv:2509.06337},
+  year={2025}
+}</code></pre>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>
+      &copy; 2025 LLM-S<sup>3</sup> Project.
+      <a href="https://arxiv.org/abs/2509.06337" target="_blank" rel="noopener">arXiv:2509.06337</a> &middot;
+      <a href="https://github.com/dart-lab-research/LLM-S-Cube-Benchmark" target="_blank" rel="noopener">GitHub</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
