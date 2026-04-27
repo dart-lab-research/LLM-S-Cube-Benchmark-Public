@@ -1,5 +1,23 @@
 # LLM-S³: Large Language Model-based Sociodemographic Survey Simulation
 
+<p align="center">
+  <a href="https://dart-lab-research.github.io/LLM-S-Cube-Benchmark/">
+    <img src="https://img.shields.io/badge/Homepage-Visit-blue?style=for-the-badge" alt="Homepage" />
+  </a>
+  <a href="https://arxiv.org/abs/2509.06337">
+    <img src="https://img.shields.io/badge/arXiv-2509.06337-b31b1b?style=for-the-badge" alt="arXiv" />
+  </a>
+  <a href="https://arxiv.org/pdf/2509.06337">
+    <img src="https://img.shields.io/badge/PDF-Download-4f46e5?style=for-the-badge" alt="PDF" />
+  </a>
+  <a href="https://github.com/dart-lab-research/LLM-S-Cube-Benchmark">
+    <img src="https://img.shields.io/badge/Code-GitHub-111827?style=for-the-badge" alt="Code" />
+  </a>
+  <a href="#citation">
+    <img src="https://img.shields.io/badge/BibTeX-Citation-0f766e?style=for-the-badge" alt="BibTeX" />
+  </a>
+</p>
+
 This repository is the official implementation of [Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation](https://arxiv.org/abs/2509.06337).
 
 > This paper presents **LLM-S³** (**L**arge **L**anguage **M**odel-based **S**ociodemographic **S**urvey **S**imulation), a benchmark for structured survey simulation with large language models. It enables the generation of synthetic responses that closely mirror real-world sociodemographic patterns.
@@ -188,4 +206,3 @@ We use radar plots to provide an intuitive comparison of model performance acros
   year={2025}
 }
 ```
-
