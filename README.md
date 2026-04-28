@@ -1,7 +1,7 @@
 # LLM-S³: Large Language Model-based Sociodemographic Survey Simulation
 
 <p align="center">
-  <a href="https://dart-lab-research.github.io/LLM-S-Cube-Benchmark/">
+  <a href="https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/">
     <img src="https://img.shields.io/badge/Homepage-Visit-blue?style=for-the-badge" alt="Homepage" />
   </a>
   <a href="https://arxiv.org/abs/2509.06337">
@@ -10,7 +10,7 @@
   <a href="https://arxiv.org/pdf/2509.06337">
     <img src="https://img.shields.io/badge/PDF-Download-4f46e5?style=for-the-badge" alt="PDF" />
   </a>
-  <a href="https://github.com/dart-lab-research/LLM-S-Cube-Benchmark">
+  <a href="https://github.com/dart-lab-research/LLM-S-Cube-Benchmark-Public">
     <img src="https://img.shields.io/badge/Code-GitHub-111827?style=for-the-badge" alt="Code" />
   </a>
   <a href="#citation">
@@ -24,13 +24,9 @@ This repository is the official implementation of [Large Language Models as Virt
 
 ## Key Contributions
 
-- **Task Abstraction for Survey Simulation**\
-  Formalizes two complementary task settings for LLM-based survey simulation: **Partial Attribute Simulation (PAS)** for predicting missing attributes from individual demographic profiles, and **Full Attribute Simulation (FAS)** for generating synthetic populations from aggregate statistics.
-- **Unified Multi-Domain Benchmark**\
-  Curates **LLM-S³**, a standardized benchmark built on eleven public datasets spanning four sociological domains:\
-  *Social and Public Affairs*, *Work and Income*, *Household and Behavioral Patterns*, and *Health and Lifestyle*.
-- **Systematic Evaluation and Diagnostic Analysis**\
-  Evaluates four LLMs (*GPT-4 Turbo*, *GPT-3.5 Turbo*, *LLaMA-3.0-8B*, and *LLaMA-3.1-8B*) under unified quantitative protocols, and highlights practical findings such as attribute-level predictability differences in PAS and structured-output failure modes in FAS.
+- **Task Abstraction for Survey Simulation**: Formalizes two complementary task settings for LLM-based survey simulation: **Partial Attribute Simulation (PAS)** for predicting missing attributes from individual demographic profiles, and **Full Attribute Simulation (FAS)** for generating synthetic populations from aggregate statistics.
+- **Unified Multi-Domain Benchmark**: Curates **LLM-S³**, a standardized benchmark built on eleven public datasets spanning four sociological domains: *Social and Public Affairs*, *Work and Income*, *Household and Behavioral Patterns*, and *Health and Lifestyle*.
+- **Systematic Evaluation and Diagnostic Analysis**: Evaluates four LLMs (*GPT-4 Turbo*, *GPT-3.5 Turbo*, *LLaMA-3.0-8B*, and *LLaMA-3.1-8B*) under unified quantitative protocols, and highlights practical findings such as attribute-level predictability differences in PAS and structured-output failure modes in FAS.
 
 An overview of our benchmark workflow is illustrated in the following figure, showcasing Partial Attribute Simulation (left) and Full Attribute Simulation (right).
 ![Benchmark Workflow](./overview.png)
@@ -83,7 +79,7 @@ Taking the prediction attribute of the public's support for presidential candida
 
 ```bash
 # ANES dataset
-cd YOUR_DOCUMENTS/LLM-S-Cube-Benchmark/PAS/ANES
+cd YOUR_DOCUMENTS/LLM-S-Cube-Benchmark-Public/PAS/ANES
 ```
 
 This code includes the use of large models llama3:8b and llama3.1:8b. Make sure you have deployed them locally. If not, you may use the command mentioned in Requirements.
@@ -103,7 +99,7 @@ After this, you can run the code with the following command:
 
 ```bash
 # run election intention of ANES2020
-python prompt_a20.py(PAS)
+python prompt_a20.py
 ```
 
 ### 3. Run the code and view the results (for FAS)
@@ -121,7 +117,7 @@ First enter the following command to locate the file location:
 
 ```bash
 # ANES dataset
-cd YOUR_DOCUMENTS/LLM-S-Cube-Benchmark/FAS/ANES
+cd YOUR_DOCUMENTS/LLM-S-Cube-Benchmark-Public/FAS/ANES
 ```
 
 After this, you can run the code with the following command:
@@ -142,7 +138,7 @@ python Fsimulation_deal.py
 
 The resulting file should contain six columns: three columns for the actual value and three columns for the predicted value.
 
-### 3. Calculate output (for FAS & PAS)
+### 4. Calculate output (for FAS & PAS)
 
 For the output results of the correct rate of multiple-choice questions, directly run the `.py` file to get the correct rate output results and store them in `acc.txt`.
 
@@ -151,7 +147,7 @@ For the output of numerical values (non-selective question accuracy), you need t
 The **Kullback-Leibler (KL) divergence** calculation formula is as follows:
 
 $$
-D\_{KL}(P | Q) = \sum\_{i=1}^K P\_i \log \frac{P\_i}{Q\_i}
+D\_{KL}(P \| Q) = \sum\_{i=1}^K P\_i \log \frac{P\_i}{Q\_i}
 $$
 
 Then, map the KL divergence $D\_j$ for each target attribute to a \[0, 1] score, where higher means better model performance:
@@ -163,38 +159,25 @@ $$
 - **Higher $S\_j$:** Better alignment between predicted and true distributions
 - **Lower $S\_j$:** Larger divergence between predicted and true
 
-### 4. Model Performance Visualization
+### 5. Model Performance Visualization
 
 We use radar plots to provide an intuitive comparison of model performance across datasets, prediction tasks, and evaluation settings in both the PAS and FAS scenarios.
 
-- <br />
-  #### For PAS:
+#### PAS
 
 ![PAS Performance Radar Plot](./radar2.png)
 
-- **Plot design:**\
-  Each axis is individually scaled within its dataset for better visualization of relative differences.
-- **Prediction tasks:**
-  - **Multi-choice (top row):** Tasks with several answer options, performance measured by accuracy.
-  - **Numerical (bottom row):** Continuous value estimation, performance measured by a normalized transformation of KL divergence.
-- **Evaluation strategies:**
-  - **Zero-shot:** Shown on the left.
-  - **Few-shot:** Shown on the right.
+- **Plot design**: Each axis is individually scaled within its dataset for better visualization of relative differences.
+- **Prediction tasks**: Multi-choice (top row) measured by accuracy; numerical (bottom row) measured by a normalized transformation of KL divergence.
+- **Evaluation strategies**: Zero-shot (left) and few-shot (right).
 
-***
-
-- <br />
-  #### For FAS:
+#### FAS
 
 ![FAS Performance Radar Plot](./radar1.png)
 
-- **Prediction tasks:**\
-  Generate some batches of data based on background information to reflect the distribution, performance measured by a normalized transformation of KL divergence.
-- **Evaluation strategies:**
-  - **Zero-context:** Shown on the left.
-  - **Context-enhanced:** Shown on the right.
-- **Scoring:**\
-  Higher values always indicate better model performance.
+- **Prediction tasks**: Generate batches of data based on background information to reflect the distribution; performance measured by a normalized transformation of KL divergence.
+- **Evaluation strategies**: Zero-context (left) and context-enhanced (right).
+- **Scoring**: Higher values always indicate better model performance.
 
 ## Citation
 
