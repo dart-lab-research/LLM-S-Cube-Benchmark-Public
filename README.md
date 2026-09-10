@@ -20,6 +20,10 @@
 
 This repository is the official implementation of [Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation](https://arxiv.org/abs/2509.06337).
 
+[Project homepage: LLM-S3 benchmark](https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/) — task definitions, datasets, evaluation results, and citation.
+
+For maintainers: see [Google Search indexing setup](SEARCH_INDEXING.md).
+
 > This paper presents **LLM-S³** (**L**arge **L**anguage **M**odel-based **S**ociodemographic **S**urvey **S**imulation), a benchmark for structured survey simulation with large language models. It enables the generation of synthetic responses that closely mirror real-world sociodemographic patterns.
 
 ## Key Contributions
