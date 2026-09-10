@@ -21,6 +21,10 @@ Keep `docs/google73a00dde3e976afa.html` unchanged and available after verificati
 
 No Search Console verification, sitemap submission, or indexing request is performed merely by deploying these files. Those actions must be completed in the account UI.
 
+## Project naming
+
+Use `LLM-S³ (LLM S Cube) Benchmark` as the visible project name, `LLM-S3` as the plain-text spelling, and retain the full paper title. The homepage and README explain that these names refer to the same project. Use natural wording instead of hidden keyword lists or repeated query variations; Google determines query matching and ranking after crawling.
+
 ## Maintenance
 
 - Publish homepage changes through `docs/` on `main`.

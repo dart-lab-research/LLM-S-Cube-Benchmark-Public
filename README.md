@@ -1,4 +1,4 @@
-# LLM-S³: Large Language Model-based Sociodemographic Survey Simulation
+# LLM-S³ (LLM S Cube) Benchmark
 
 <p align="center">
   <a href="https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/">
@@ -18,9 +18,11 @@
   </a>
 </p>
 
+**LLM-S³**, pronounced **LLM S Cube** and written **LLM-S3** in plain text, stands for **Large Language Model-based Sociodemographic Survey Simulation**. This benchmark evaluates large language models as virtual survey respondents.
+
 This repository is the official implementation of [Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation](https://arxiv.org/abs/2509.06337).
 
-[Project homepage: LLM-S3 benchmark](https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/) — task definitions, datasets, evaluation results, and citation.
+[Project homepage: LLM S Cube benchmark](https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/) — task definitions, datasets, evaluation results, and citation.
 
 For maintainers: see [Google Search indexing setup](SEARCH_INDEXING.md).
 
