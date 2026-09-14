@@ -38,3 +38,23 @@ Use `LLM-S³ (LLM S Cube) Benchmark` as the visible project name, `LLM-S3` as th
 - [Verify site ownership](https://support.google.com/webmasters/answer/9008080)
 - [Request recrawling](https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl)
 - [Build and submit a sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
+
+
+## Search favicon and site-name scope
+
+The project has a cube favicon in ICO, PNG and SVG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
+
+Google supports one search favicon and one site name per hostname, not per project subdirectory. The root `https://dart-lab-research.github.io/` returned HTTP 404 on 2026-09-14. Adding icons or `WebSite` site-name data only to this project's subdirectory cannot fully configure the host-level search identity.
+
+An organization maintainer should publish an appropriate organization homepage in `dart-lab-research/dart-lab-research.github.io`, link its favicon from the root homepage, and add `WebSite` structured data there. The name and icon will represent all projects under that host and should be agreed at organization level. A prepared starter uses the proposed label “DART Lab Research”; it has not been deployed by this project change.
+
+Repository administrators can also set the repository About description to:
+
+> LLM-S3 (LLM S Cube) Benchmark: evaluating large language models as virtual survey respondents. Official code, datasets, and project page.
+
+Suggested repository topics: `llm-s3`, `llm-s-cube`, `benchmark`, `survey-simulation`, `large-language-models`. The current collaborator has push access but no admin access; repository About settings are not changed by this commit.
+
+Names and metadata are signals, not guarantees of Google selection or query ranking. Keep the established URL and consistent project aliases; avoid repeated keyword lists or frequent renaming.
+
+- [Google favicon requirements](https://developers.google.com/search/docs/appearance/favicon-in-search)
+- [Google site-name requirements](https://developers.google.com/search/docs/appearance/site-names)
