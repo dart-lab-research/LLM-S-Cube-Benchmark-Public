@@ -1,8 +1,8 @@
 Generator: built-in image_gen.
 Date: 2026-09-14
-User-selected revision: exec-9357ad98-c528-4eca-bea6-cd8991261748.png
+Revision: exec-7789972c-93eb-48f3-9bcc-012ab5fc086a.png (user-requested removal of connector boxes)
 Purpose: repository README, project heading, browser and search favicon assets.
-Design: navy isometric cube, ivory left face with solid respondent, cyan right face with outlined simulated respondent, three connecting digital pixels. Large LLM letterforms fill the ivory top rhombus.
-Final edit prompt summary: Remove thin separator seams between cube faces and the navy exterior backdrop. Preserve the large LLM top-face monogram, solid and outlined respondents, connecting pixels and filled faces. Export a true RGBA PNG with transparent exterior, without a painted checkerboard.
+Design: navy isometric cube, ivory left face with solid respondent, cyan right face with outlined simulated respondent. Large LLM letterforms fill the ivory top rhombus.
+Final edit prompt summary: Remove the three small connecting square boxes and fill their regions with the underlying ivory/cyan face colors. Preserve the large LLM top-face monogram and solid/outlined respondents. Remove outlines and export a true RGBA PNG with transparent exterior.
 Source: docs/assets/llm-s3-survey-logo.png (approved raster, unchanged).
 Derivatives: sips resampling for 16/32/48/96/180/256 pixel PNGs; ICO contains 16/32/48 pixel PNG entries.
