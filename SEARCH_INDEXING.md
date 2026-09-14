@@ -42,7 +42,7 @@ Use `LLM-S³ (LLM S Cube) Benchmark` as the visible project name, `LLM-S3` as th
 
 ## Search favicon and site-name scope
 
-The project has a cube favicon in ICO, PNG and SVG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
+The project has an AI-generated survey respondent favicon in ICO and PNG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
 
 Google supports one search favicon and one site name per hostname, not per project subdirectory. The root `https://dart-lab-research.github.io/` returned HTTP 404 on 2026-09-14. Adding icons or `WebSite` site-name data only to this project's subdirectory cannot fully configure the host-level search identity.
 
@@ -58,3 +58,5 @@ Names and metadata are signals, not guarantees of Google selection or query rank
 
 - [Google favicon requirements](https://developers.google.com/search/docs/appearance/favicon-in-search)
 - [Google site-name requirements](https://developers.google.com/search/docs/appearance/site-names)
+
+The final logo combines three respondent silhouettes with a checked survey speech bubble. Source artwork: `docs/assets/llm-s3-survey-logo.png`; generation prompt: `branding/logo-generation.txt`. The earlier geometric cube icon has been replaced.
