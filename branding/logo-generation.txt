@@ -1,8 +1,8 @@
 Generator: built-in image_gen.
 Date: 2026-09-14
-User-selected revision: exec-5ad516bf-966c-46dc-8c0d-9e04213916fb.png
+User-selected revision: exec-9357ad98-c528-4eca-bea6-cd8991261748.png
 Purpose: repository README, project heading, browser and search favicon assets.
 Design: navy isometric cube, ivory left face with solid respondent, cyan right face with outlined simulated respondent, three connecting digital pixels. Large LLM letterforms fill the ivory top rhombus.
-Final edit prompt summary: Redesign only the top rhombus as an edge-to-edge LLM typographic monogram, with thin ivory perimeter and separation channels; preserve lower faces, people, pixels, colors and cube geometry.
+Final edit prompt summary: Remove thin separator seams between cube faces and the navy exterior backdrop. Preserve the large LLM top-face monogram, solid and outlined respondents, connecting pixels and filled faces. Export a true RGBA PNG with transparent exterior, without a painted checkerboard.
 Source: docs/assets/llm-s3-survey-logo.png (approved raster, unchanged).
 Derivatives: sips resampling for 16/32/48/96/180/256 pixel PNGs; ICO contains 16/32/48 pixel PNG entries.
