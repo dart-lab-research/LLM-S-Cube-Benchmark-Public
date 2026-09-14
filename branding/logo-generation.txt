@@ -1,5 +1,8 @@
-Generator: built-in image_gen (not CLI).
+Generator: built-in image_gen.
 Date: 2026-09-14
-Purpose: favicon for the LLM-S3 survey respondent benchmark.
-Original prompt:
-Use case: logo-brand. Create one finished square favicon/logo for the academic benchmark LLM-S3, paper 'Large Language Models as Virtual Survey Respondents: Evaluating Sociodemographic Response Generation'. Design a bold, extremely simple integrated emblem: three abstract human respondent busts (one dominant central person, two smaller people) merged with a survey speech bubble containing a single large checkmark. The people signify a population with different profiles, the speech bubble and checkmark signify AI-generated survey responses. Avoid stereotypes, flags or demographic labels. Flat vector-like geometric design, crisp broad shapes, dark navy background edge-to-edge (#102744), ivory central person, cyan and teal supporting forms consistent with an academic navy/blue/teal website. Centered emblem fills roughly 80% of square canvas, high contrast, balanced silhouette, clearly readable at 32x32 pixels. No text, no letters, no digits, no tiny circuit lines, no gradients, no drop shadows, no 3D, no mockups, no multiple variants. Output a single 1024x1024 PNG-style square icon.
+User-selected revision: exec-5ad516bf-966c-46dc-8c0d-9e04213916fb.png
+Purpose: repository README, project heading, browser and search favicon assets.
+Design: navy isometric cube, ivory left face with solid respondent, cyan right face with outlined simulated respondent, three connecting digital pixels. Large LLM letterforms fill the ivory top rhombus.
+Final edit prompt summary: Redesign only the top rhombus as an edge-to-edge LLM typographic monogram, with thin ivory perimeter and separation channels; preserve lower faces, people, pixels, colors and cube geometry.
+Source: docs/assets/llm-s3-survey-logo.png (approved raster, unchanged).
+Derivatives: sips resampling for 16/32/48/96/180/256 pixel PNGs; ICO contains 16/32/48 pixel PNG entries.

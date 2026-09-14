@@ -42,7 +42,7 @@ Use `LLM-S³ (LLM S Cube) Benchmark` as the visible project name, `LLM-S3` as th
 
 ## Search favicon and site-name scope
 
-The project has an AI-generated survey respondent favicon in ICO and PNG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
+The project has an AI-generated cube and survey simulation favicon in ICO and PNG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
 
 Google supports one search favicon and one site name per hostname, not per project subdirectory. The root `https://dart-lab-research.github.io/` returned HTTP 404 on 2026-09-14. Adding icons or `WebSite` site-name data only to this project's subdirectory cannot fully configure the host-level search identity.
 
@@ -59,4 +59,6 @@ Names and metadata are signals, not guarantees of Google selection or query rank
 - [Google favicon requirements](https://developers.google.com/search/docs/appearance/favicon-in-search)
 - [Google site-name requirements](https://developers.google.com/search/docs/appearance/site-names)
 
-The final logo combines three respondent silhouettes with a checked survey speech bubble. Source artwork: `docs/assets/llm-s3-survey-logo.png`; generation prompt: `branding/logo-generation.txt`. The earlier geometric cube icon has been replaced.
+The approved logo combines a cube with a solid real respondent, an outlined simulated respondent, connecting digital pixels, and an LLM monogram filling the top face. Source artwork: `docs/assets/llm-s3-survey-logo.png`; generation record: `branding/logo-generation.txt`. The README and homepage title use `docs/assets/llm-s3-logo-256.png`. Browser icon URLs remain stable.
+
+A ready-to-publish root-site starter with the same approved favicon is stored in `branding/root-site/`. An organization maintainer can copy its contents into `dart-lab-research/dart-lab-research.github.io` and enable Pages for that repository. This folder is outside `docs/` and is not published as part of this project site. The root still returned HTTP 404 when checked on 2026-09-14, and the current account could not access the root-site repository. Google search favicon configuration therefore remains pending at host level. GitHub repository search results use GitHub’s host icon; a project cannot override that icon.

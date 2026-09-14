@@ -1,4 +1,4 @@
-# LLM-S³ (LLM S Cube) Benchmark
+# <img src="docs/assets/llm-s3-logo-256.png" alt="LLM-S3 cube logo" width="56" height="56" align="absmiddle" /> LLM-S³ (LLM S Cube) Benchmark
 
 <p align="center">
   <a href="https://dart-lab-research.github.io/LLM-S-Cube-Benchmark-Public/">
