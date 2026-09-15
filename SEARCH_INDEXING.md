@@ -42,7 +42,7 @@ Use `LLM-S³ (LLM S Cube) Benchmark` as the visible project name, `LLM-S3` as th
 
 ## Search favicon and site-name scope
 
-The project has an AI-generated cube and survey simulation favicon in ICO and PNG formats; its title starts with `LLM-S3 Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
+The project has an AI-generated cube and survey simulation favicon in ICO and PNG formats; its title starts with `LLM S Cube (LLM-S3) Benchmark` and retains the full paper title. These files improve browser identification and provide a stable icon for reuse.
 
 Google supports one search favicon and one site name per hostname, not per project subdirectory. The root `https://dart-lab-research.github.io/` returned HTTP 404 on 2026-09-14. Adding icons or `WebSite` site-name data only to this project's subdirectory cannot fully configure the host-level search identity.
 
